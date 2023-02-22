@@ -33,7 +33,9 @@ public class UserServiceImpl implements UserService {
 	
 	final static public String KEY = "1D2A907A05656A7E1A570B14C573D192";
 	
-	
+	String BankName="";
+	String BankBranch="";
+	String BankCode="";
 
 	@Override
 	public UserDto createUser(UserDto user) {
@@ -82,16 +84,35 @@ public class UserServiceImpl implements UserService {
 		userEntity.setAes_128bit_enckey(KEY);
 		userEntity.setEncrypted_str(AESData);
 		userEntity.setUVR(AESData);
-		userEntity.setOptional("optional");
-		userEntity.setPeerBankBranch("optional");
-		userEntity.setPeerBankName("optional");
 		
 		List<BankEntity> bankList = bankRepository.findAll();
 		
 		for(int i = 0; i < bankList.size(); i++){
+		if(bankList.get(i).getPeerBankCode().equals(userEntity.getPeerBankCode())) {
 			System.out.println(bankList.get(i).getPeerBankCode());
 			
+			BankName=bankList.get(i).getPeerBankName().toString();
+			BankBranch=bankList.get(i).getPeerBankBranch().toString();
+			BankCode=bankList.get(i).getPeerBankCode().toString();
+
+			
+			System.out.println(BankName);
+			System.out.println(BankBranch);
+			System.out.println(BankCode);
+			
+			break;
+			
+			}	
 		}
+		
+		System.out.println(BankName);
+		System.out.println(BankBranch);
+		System.out.println(BankCode);
+		
+		userEntity.setOptional("optional");
+		userEntity.setPeerBankBranch(BankBranch);
+		userEntity.setPeerBankName(BankName);
+		
 	
 		//bankList.forEach(System.out::println); //printArrays
 		
