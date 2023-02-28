@@ -8,7 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vaibhav.ws.peer.BankRepository;
+import com.vaibhav.ws.peer.BlockRepository;
 import com.vaibhav.ws.peer.UserRepository;
+import com.vaibhav.ws.peer.blockchain.Block;
+import com.vaibhav.ws.peer.blockchain.Blockchain;
+import com.vaibhav.ws.peer.blockchain.Constants;
+import com.vaibhav.ws.peer.blockchain.Miner;
 import com.vaibhav.ws.peer.io.entity.BankEntity;
 import com.vaibhav.ws.peer.io.entity.UserEntity;
 import com.vaibhav.ws.peer.service.UserService;
@@ -25,6 +30,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	BankRepository bankRepository;
 	
+	@Autowired
+	BlockRepository blockRepository;
+	
 	@Autowired 
 	Utils utils;
 	
@@ -36,6 +44,10 @@ public class UserServiceImpl implements UserService {
 	String BankName="";
 	String BankBranch="";
 	String BankCode="";
+	
+	String UVR;
+	
+	Boolean getUVRFromDB=false;
 
 	@Override
 	public UserDto createUser(UserDto user) {
@@ -71,12 +83,20 @@ public class UserServiceImpl implements UserService {
 		userEntity.setPid("test");
 		userEntity.setUVR("test");*/
 		
+		//String newBankDetails = bankUtils.getBankDetails("SBI0004");
+		//System.out.println(newBankDetails);
+		
+		
+		
 		String publicUserId = utils.generateUserId(10);
 		userEntity.setPid(publicUserId);
 		
+		String tarnsactionId = utils.generateTransactionId(10);
+		userEntity.setTransactionid(tarnsactionId);
+		
 		
 		AesCryptUtil aesCryptUtil = new AesCryptUtil(KEY);
-		String AESData = aesCryptUtil.encrypt(userEntity.getFirstname()+"&"+userEntity.getLastname()+"&"+userEntity.getAmount()+"&"+userEntity.getCurrency()+"&"+userEntity.getEmail());
+		String AESData = aesCryptUtil.encrypt(userEntity.getTransactionid()+"&"+userEntity.getFirstname()+"&"+userEntity.getLastname()+"&"+userEntity.getAmount()+"&"+userEntity.getCurrency()+"&"+userEntity.getEmail());
 		
 		System.out.println(aesCryptUtil.encrypt(userEntity.getFirstname())); // test working
 		System.out.println(AESData); // test working
@@ -85,29 +105,77 @@ public class UserServiceImpl implements UserService {
 		userEntity.setEncrypted_str(AESData);
 		userEntity.setUVR(AESData);
 		
+		/*List<UserEntity> userList = userRepository.findAll();
+		
+		for(int i = 0; i < userList.size(); i++){
+		if(userList.get(i).getUVR().equals(userEntity.getUVR())) {
+			getUVRFromDB = true;
+			
+			//System.out.println(bankList.get(i).getPeerBankCode());
+			
+			UVR=userList.get(i).getUVR().toString();
+			System.out.println("\n\n UVR : "+UVR);
+			
+			Blockchain blockchain = new Blockchain();
+			Miner miner = new Miner();
+			
+			Block block0 = new Block(0, "GENESIS_BLOCK" , Constants.GENESIS_PREV_HASH);
+			miner.mine(block0, blockchain);
+			
+			Block block1 = new Block(1, "transaction1" , blockchain.getBlockChain().get(blockchain.getSize()-1).getHash());
+			miner.mine(block1, blockchain);
+			
+			Block block2 = new Block(2, "transaction2" , blockchain.getBlockChain().get(blockchain.getSize()-1).getHash());
+			miner.mine(block2, blockchain);
+			
+			System.out.println("\n"+ "BLOCKCHAIN \n"+blockchain);
+			System.out.println("Miner's Reward : "+miner.getReward());
+			
+			break;
+			
+			}	
+		}*/
+		
+		
+		/*if(getUVRFromDB) {
+			System.out.println("\n"+ "TRUE STATEMENT UPDATED !! \n");
+			
+			Blockchain blockchain = new Blockchain();
+			Miner miner = new Miner();
+			
+			Block block0 = new Block(0, "GENESIS_BLOCK" , Constants.GENESIS_PREV_HASH);
+			miner.mine(block0, blockchain);
+			
+			for (int i = 1; i < userList.size(); i++) {
+				
+				Block block = new Block(i, "Transaction"+i , blockchain.getBlockChain().get(blockchain.getSize()-1).getHash());
+				miner.mine(block, blockchain);
+
+			}
+			
+			
+			System.out.println("\n"+ "BLOCKCHAIN \n"+blockchain);
+			System.out.println("Miner's Reward : "+miner.getReward());
+		}*/
+
 		List<BankEntity> bankList = bankRepository.findAll();
 		
 		for(int i = 0; i < bankList.size(); i++){
 		if(bankList.get(i).getPeerBankCode().equals(userEntity.getPeerBankCode())) {
-			System.out.println(bankList.get(i).getPeerBankCode());
+			//System.out.println(bankList.get(i).getPeerBankCode());
 			
 			BankName=bankList.get(i).getPeerBankName().toString();
 			BankBranch=bankList.get(i).getPeerBankBranch().toString();
 			BankCode=bankList.get(i).getPeerBankCode().toString();
-
-			
-			System.out.println(BankName);
-			System.out.println(BankBranch);
-			System.out.println(BankCode);
 			
 			break;
 			
 			}	
 		}
 		
-		System.out.println(BankName);
-		System.out.println(BankBranch);
-		System.out.println(BankCode);
+		//System.out.println(BankName);
+		//System.out.println(BankBranch);
+		//System.out.println(BankCode);
 		
 		userEntity.setOptional("optional");
 		userEntity.setPeerBankBranch(BankBranch);
@@ -138,6 +206,7 @@ public class UserServiceImpl implements UserService {
 		System.out.println(returnValue.getPid());
 		System.out.println(returnValue.getUVR());
 		System.out.println(returnValue.getEmail());
+		
 		
 		return returnValue;
 	}

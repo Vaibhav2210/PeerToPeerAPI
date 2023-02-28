@@ -42,7 +42,7 @@ public class AesCryptUtil {
         SecretKeySpec skey = new SecretKeySpec(getMD5(key), "AES");
         this.setupCrypto(skey);
     }
-
+    
     private void setupCrypto(SecretKey key){
         // Create an 8-byte initialization vector
         byte[] iv = new byte[]

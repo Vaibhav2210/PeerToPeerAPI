@@ -1,6 +1,7 @@
 package com.vaibhav.ws.peer.io.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -62,8 +63,26 @@ public class UserEntity implements Serializable {
 	@Column(nullable=true)
 	private String email;
 	
+	@Column(nullable=true , unique=true)
+	private String transactionid;
+	
+	@Column(nullable=true)
+	private Long date;
 	
 	
+	
+	public String getTransactionid() {
+		return transactionid;
+	}
+	public void setTransactionid(String transactionid) {
+		this.transactionid = transactionid;
+	}
+	public Long getDate() {
+		return date = new Date().getTime();
+	}
+	public void setDate(Long date) {
+		this.date = date;
+	}
 	public String getEmail() {
 		return email;
 	}

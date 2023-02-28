@@ -1,6 +1,7 @@
 package com.vaibhav.ws.peer.shared.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class UserDto implements Serializable {
 
@@ -23,9 +24,22 @@ public class UserDto implements Serializable {
 	private String pid;
 	private String optional;
 	private String email;
+	private String transactionid;
+	private Long date;
 	
-	
-	
+	public Long getDate() {
+		return date = new Date().getTime();
+	}
+	public void setDate(Long date) {
+		this.date = date;
+	}
+	 
+	public String getTransactionid() {
+		return transactionid;
+	}
+	public void setTransactionid(String transactionid) {
+		this.transactionid = transactionid;
+	}
 	public String getEmail() {
 		return email;
 	}
@@ -122,7 +136,4 @@ public class UserDto implements Serializable {
 	public void setOptional(String optional) {
 		this.optional = optional;
 	}
-
-
-
 }
