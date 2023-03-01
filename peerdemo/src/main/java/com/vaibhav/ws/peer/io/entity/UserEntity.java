@@ -67,7 +67,7 @@ public class UserEntity implements Serializable {
 	private String transactionid;
 	
 	@Column(nullable=true)
-	private Long date;
+	private Long date = new Date().getTime();
 	
 	
 	
@@ -78,7 +78,7 @@ public class UserEntity implements Serializable {
 		this.transactionid = transactionid;
 	}
 	public Long getDate() {
-		return date = new Date().getTime();
+		return date;
 	}
 	public void setDate(Long date) {
 		this.date = date;

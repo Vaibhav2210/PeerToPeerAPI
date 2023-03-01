@@ -27,8 +27,34 @@ public class BankEntity implements Serializable {
 	@Column(nullable=true)
 	private String peerBankName;
 	
+	
+	@Column(nullable=true)
+	private String UVR;
+	
+	
+	@Column(nullable=true)
+	private String transactionid;
+	
+	
 	@Column(nullable=true)
 	private boolean bank_verify=true;
+
+
+	public String getUVR() {
+		return UVR;
+	}
+
+	public void setUVR(String uVR) {
+		UVR = uVR;
+	}
+
+	public String getTransactionid() {
+		return transactionid;
+	}
+
+	public void setTransactionid(String transactionid) {
+		this.transactionid = transactionid;
+	}
 
 	public long getId() {
 		return id;

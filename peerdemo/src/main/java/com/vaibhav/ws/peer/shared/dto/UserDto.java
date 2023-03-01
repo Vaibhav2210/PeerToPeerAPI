@@ -25,10 +25,10 @@ public class UserDto implements Serializable {
 	private String optional;
 	private String email;
 	private String transactionid;
-	private Long date;
+	private Long date = new Date().getTime();
 	
 	public Long getDate() {
-		return date = new Date().getTime();
+		return date;
 	}
 	public void setDate(Long date) {
 		this.date = date;

@@ -19,6 +19,7 @@ import com.vaibhav.ws.peer.io.entity.UserEntity;
 import com.vaibhav.ws.peer.service.UserService;
 import com.vaibhav.ws.peer.shared.AesCryptUtil;
 import com.vaibhav.ws.peer.shared.Utils;
+import com.vaibhav.ws.peer.shared.dto.BankDto;
 import com.vaibhav.ws.peer.shared.dto.UserDto;
 
 @Service
@@ -48,6 +49,26 @@ public class UserServiceImpl implements UserService {
 	String UVR;
 	
 	Boolean getUVRFromDB=false;
+	
+	BankDto bankDto = new BankDto();
+	
+	/*@Override
+	public BankDto createUser(BankDto bankDto) {
+		//BankDB
+		
+				bankDto.setBank_verify(false);
+				bankDto.setId(111);
+				bankDto.setPeerBankBranch("Test");
+				bankDto.setPeerBankCode("Test");
+				bankDto.setPeerBankName("Test");
+				bankDto.setTransactionid("Test");
+				bankDto.setUVR("Test");
+				
+				BankServiceImpl bankServiceImpl = new BankServiceImpl();
+				bankServiceImpl.createUser(bankDto);
+		
+		return bankDto;
+	}*/
 
 	@Override
 	public UserDto createUser(UserDto user) {
@@ -181,10 +202,26 @@ public class UserServiceImpl implements UserService {
 		userEntity.setPeerBankBranch(BankBranch);
 		userEntity.setPeerBankName(BankName);
 		
-	
 		//bankList.forEach(System.out::println); //printArrays
 		
 		UserEntity storedUserDetails = userRepository.save(userEntity);
+		
+		
+		//Bank DB
+		/*BankDto bankDto = new BankDto();
+		
+		bankDto.setBank_verify(false);
+		bankDto.setId(111);
+		bankDto.setPeerBankBranch("Test");
+		bankDto.setPeerBankCode("Test");
+		bankDto.setPeerBankName("Test");
+		bankDto.setTransactionid("Test");
+		bankDto.setUVR("Test");*/
+		
+		
+		
+		
+		//User Methods
 		
 		UserDto returnValue = new UserDto();
 		BeanUtils.copyProperties(storedUserDetails, returnValue);
@@ -210,5 +247,4 @@ public class UserServiceImpl implements UserService {
 		
 		return returnValue;
 	}
-
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.vaibhav.ws.peer.io.entity.BankEntity;
-
 /**
  * @author Admin
  *
@@ -20,9 +19,10 @@ import com.vaibhav.ws.peer.io.entity.BankEntity;
 @Service
 public interface BankRepository extends CrudRepository<BankEntity, Integer> {
 	
+	 
+	
 	BankEntity findById(int id);
 	List<BankEntity> findAll();
 	void deleteById(int id);
 	BankRepository findById(String peerBankCode);
-
 }

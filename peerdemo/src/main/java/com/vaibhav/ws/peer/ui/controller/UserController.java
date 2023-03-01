@@ -1,5 +1,6 @@
 package com.vaibhav.ws.peer.ui.controller;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import com.vaibhav.ws.peer.io.entity.BankEntity;
 import com.vaibhav.ws.peer.io.entity.BlockEntity;
 import com.vaibhav.ws.peer.service.UserService;
 import com.vaibhav.ws.peer.shared.AesCryptUtil;
+import com.vaibhav.ws.peer.shared.dto.BankDto;
 import com.vaibhav.ws.peer.shared.dto.UserDto;
 import com.vaibhav.ws.peer.ui.model.request.UserDetailsRquestModel;
 import com.vaibhav.ws.peer.ui.model.response.UserRest;
@@ -35,11 +37,23 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	//@Autowired
+	//BankService bankService;
+	
 	@Autowired
 	BankRepository bankRepository;
 	
 	@Autowired
 	BlockRepository blockRepository;
+	
+	//@Autowired
+	//BankService bankService1;
+	
+	UserDetailsRquestModel newUserDetails;
+	
+	UserRest newRest;
+	
+	BankEntity bankEntity;
 	
 	
 	final static public String KEY = "1D2A907A05656A7E1A570B14C573D192";
@@ -85,6 +99,9 @@ public class UserController {
 	@PostMapping("/banks")
 	@ResponseStatus(HttpStatus.CREATED)
 	public BankEntity bankEntity(@RequestBody BankEntity bankEntity) {
+		
+		bankEntity.setTransactionid("Test");
+		bankEntity.setUVR("vaibhav");
 		return bankRepository.save(bankEntity);
 	}
 	
@@ -93,6 +110,7 @@ public class UserController {
 	public UserRest newpostUser(@RequestBody UserDetailsRquestModel newUserDetails) {
 		
 		UserRest retunValue = new UserRest();
+		BankEntity bank = new BankEntity();
 		
 		
 		retunValue.setFirstname(newUserDetails.getFirstname());
@@ -110,6 +128,21 @@ public class UserController {
 		retunValue.setPid("123456789");
 		retunValue.setUVR("UVR123456789QWERYT");
 		
+		bank.setBank_verify(false);
+		bank.setId(12123);
+		bank.setPeerBankBranch("Test");
+		bank.setPeerBankCode("Test");
+		bank.setPeerBankName("test");
+		bank.setTransactionid("test");
+		bank.setUVR("test");
+		//bankR.save(bank);
+		System.out.println(bank.getId());
+		
+		BankDto bankDto = new BankDto();
+		BeanUtils.copyProperties(bank, bankDto);
+		
+		//bankRepository.save(bankDto);
+	
 		
 		Blockchain blockchain = new Blockchain();
 		Miner miner = new Miner();
@@ -131,9 +164,16 @@ public class UserController {
 		BlockEntity blockEntity = new BlockEntity();
 		blockEntry(blockEntity);
 		
+		
 		return retunValue;
 		
 	}
+	
+	/*@GetMapping("/students") 
+	public List<Object> getStudents() {
+		Object[] objects = blockRepository.getForObject("http://student-microservice/students", Object[].class);
+		return Arrays.asList(objects);
+	}*/
 	
 	@PostMapping
 	public UserRest postUser(@RequestBody UserDetailsRquestModel UserDetails) {
@@ -163,7 +203,7 @@ public class UserController {
 		retunValue.setPeerBankName("State Bank of India");
 		retunValue.setPeerBankBranch("Goregaon West");
 		
-		retunValue.setPID("123456789");
+		retunValue.setPid("123456789");
 		retunValue.setUVR("UVR123456789QWERYT");*/
 		
 		UserDto userDto = new UserDto();
@@ -171,7 +211,29 @@ public class UserController {
 		
 		UserDto createUser =userService.createUser(userDto);
 		BeanUtils.copyProperties(createUser, retunValue);
-
+		
+		
+		//Bank DB
+		/*BankDto bankDto = new BankDto();
+		
+		bankDto.setBank_verify(false);
+		bankDto.setId(111);
+		bankDto.setPeerBankBranch("Test");
+		bankDto.setPeerBankCode("Test");
+		bankDto.setPeerBankName("Test");
+		bankDto.setTransactionid("Test");
+		bankDto.setUVR("Test");
+		
+		BankDto createBankUser = bankService1.createUser(bankDto);
+		
+		createBankUser.setBank_verify(false);
+		createBankUser.setId(111);
+		createBankUser.setPeerBankBranch("Test");
+		createBankUser.setPeerBankCode("Test");
+		createBankUser.setPeerBankName("Test");
+		createBankUser.setTransactionid("Test");
+		createBankUser.setUVR("Test");*/
+		
 		
 		
 		
